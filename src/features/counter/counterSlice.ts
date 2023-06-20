@@ -18,7 +18,7 @@ const initialState: CounterState = {
 // code can then be executed and other actions can be dispatched. Thunks are
 // typically used to make async requests.
 export const incrementAsync = createAsyncThunk(
-  'counter/fetchCount',
+  'co unter/fetchCount',
   async (amount: number) => {
     const response = await fetchCount(amount);
     // The value we return becomes the `fulfilled` action payload
