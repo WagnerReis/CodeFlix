@@ -9,6 +9,7 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridRowsProp,
+  GridToolbar,
 } from "@mui/x-data-grid";
 
 export default function CategoryList() {
@@ -96,6 +97,16 @@ export default function CategoryList() {
           pageSizeOptions={[10, 20, 50, 100]}
           rows={rows}
           columns={columns}
+          disableColumnFilter
+          disableColumnSelector
+          disableDensitySelector
+          slots={{ toolbar: GridToolbar }}
+          slotProps={{
+            toolbar: {
+              showQuickFilter: true,
+              quickFilterProps: { debounceMs: 500 },
+            },
+          }}
         />
       </div>
 
