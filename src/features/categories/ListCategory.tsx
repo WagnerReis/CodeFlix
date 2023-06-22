@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectCategories } from "./categorySlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import {
@@ -13,7 +13,15 @@ import {
 } from "@mui/x-data-grid";
 
 export default function CategoryList() {
+  const navigate = useNavigate();
   const categories = useAppSelector(selectCategories);
+
+  const slotProps = {
+    toolbar: {
+      showQuickFilter: true,
+      quickFilterProps: { debounceMs: 500 },
+    },
+  };
 
   const rows: GridRowsProp = categories.map((category) => ({
     id: category.id,
@@ -28,6 +36,7 @@ export default function CategoryList() {
       field: "name",
       headerName: "Name",
       flex: 1,
+      renderCell: renderNameCell,
     },
     {
       field: "isActive",
@@ -49,7 +58,22 @@ export default function CategoryList() {
     },
   ];
 
-  function renderActionsCell() {
+  function renderNameCell(rowData: GridRenderCellParams) {
+    return (
+      <Link
+        style={{ textDecoration: "none" }}
+        to={`/categories/edit/${rowData.id}`}
+      >
+        <Typography color="primary">{rowData.value}</Typography>
+      </Link>
+    );
+  }
+
+  function handleEdit(rowData: GridRenderCellParams) {
+    navigate(`/categories/edit/${rowData.id}`);
+  }
+
+  function renderActionsCell(rowData: GridRenderCellParams) {
     return (
       <>
         <IconButton
@@ -60,11 +84,11 @@ export default function CategoryList() {
           <DeleteIcon />
         </IconButton>
         <IconButton
-          onClick={() => console.log("clicked edit")}
+          onClick={() => handleEdit(rowData)}
           aria-label="edit"
           style={{ color: "yellow" }}
         >
-          <EditIcon />
+          <EditIcon style={{ height: "22px" }} />
         </IconButton>
       </>
     );
@@ -92,23 +116,18 @@ export default function CategoryList() {
         </Button>
       </Box>
 
-      <div style={{ height: 300, width: "100%" }}>
+      <Box sx={{ display: "flex", maxHeight: 600, height: 600 }}>
         <DataGrid
-          pageSizeOptions={[10, 20, 50, 100]}
           rows={rows}
           columns={columns}
           disableColumnFilter
           disableColumnSelector
+          slotProps={slotProps}
           disableDensitySelector
           slots={{ toolbar: GridToolbar }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
+          pageSizeOptions={[10, 20, 50, 100]}
         />
-      </div>
+      </Box>
 
       {/* {categories.map((category) => (
         <Typography key={category.id}>{category.name}</Typography>
