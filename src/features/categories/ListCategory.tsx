@@ -109,14 +109,14 @@ export default function CategoryList() {
           variant="contained"
           color="secondary"
           component={Link}
-          to="/category/create"
+          to="/categories/create"
           style={{ marginBottom: "1rem" }}
         >
           New Category
         </Button>
       </Box>
 
-      <Box sx={{ display: "flex", maxHeight: 600, height: 600 }}>
+      <Box sx={{ display: "flex", height: "60vh" }}>
         <DataGrid
           rows={rows}
           columns={columns}
