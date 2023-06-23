@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Category, selectCategoryById, updateCategory } from "./categorySlice";
 import { CategoryForm } from "./components/CategoryForm";
+import { useSnackbar } from "notistack";
 
 export default function CategoryEdit() {
   const id = useParams().id || "";
@@ -15,10 +16,12 @@ export default function CategoryEdit() {
   const category: Category = useAppSelector((state) => selectCategoryById(state, id));
   const [categoryState, setCategoryState] = useState<Category>(category);
   const dispatch = useAppDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    dispatch(updateCategory(categoryState))
+    dispatch(updateCategory(categoryState));
+    enqueueSnackbar("Success updating category!", { variant: "success"})
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

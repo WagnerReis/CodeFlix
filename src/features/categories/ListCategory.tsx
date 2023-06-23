@@ -12,11 +12,13 @@ import {
   GridToolbar,
 } from "@mui/x-data-grid";
 import { useDispatch } from "react-redux";
+import { useSnackbar } from "notistack";
 
 export default function CategoryList() {
   const navigate = useNavigate();
   const categories = useAppSelector(selectCategories);
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const slotProps = {
     toolbar: {
@@ -72,12 +74,13 @@ export default function CategoryList() {
     );
   }
 
-  function handleEdit(params: GridRenderCellParams) {
+  function handleEditCategory(params: GridRenderCellParams) {
     navigate(`/categories/edit/${params.id}`);
   }
 
-  function handleDelete(params: GridRenderCellParams) {
-    dispatch(deleteCategory(params))
+  function handleDeleteCategory(params: GridRenderCellParams) {
+    dispatch(deleteCategory(params));
+    enqueueSnackbar("Category deleted successfully", { variant: "success"});
   }
 
   function renderActionsCell(params: GridRenderCellParams) {
@@ -85,13 +88,13 @@ export default function CategoryList() {
       <>
         <IconButton
           color="secondary"
-          onClick={() => handleDelete(params.value)}
+          onClick={() => handleDeleteCategory(params.value)}
           aria-label="delete"
         >
           <DeleteIcon />
         </IconButton>
         <IconButton
-          onClick={() => handleEdit(params)}
+          onClick={() => handleEditCategory(params)}
           aria-label="edit"
           style={{ color: "yellow" }}
         >
