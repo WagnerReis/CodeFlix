@@ -1,6 +1,6 @@
 import { Box, Button, IconButton, Typography } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
-import { selectCategories } from "./categorySlice";
+import { deleteCategory, selectCategories } from "./categorySlice";
 import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,10 +11,12 @@ import {
   GridRowsProp,
   GridToolbar,
 } from "@mui/x-data-grid";
+import { useDispatch } from "react-redux";
 
 export default function CategoryList() {
   const navigate = useNavigate();
   const categories = useAppSelector(selectCategories);
+  const dispatch = useDispatch();
 
   const slotProps = {
     toolbar: {
@@ -53,38 +55,43 @@ export default function CategoryList() {
     {
       field: "id",
       headerName: "Actions",
+      type: "string",
       flex: 1,
       renderCell: renderActionsCell,
     },
   ];
 
-  function renderNameCell(rowData: GridRenderCellParams) {
+  function renderNameCell(params: GridRenderCellParams) {
     return (
       <Link
         style={{ textDecoration: "none" }}
-        to={`/categories/edit/${rowData.id}`}
+        to={`/categories/edit/${params.id}`}
       >
-        <Typography color="primary">{rowData.value}</Typography>
+        <Typography color="primary">{params.value}</Typography>
       </Link>
     );
   }
 
-  function handleEdit(rowData: GridRenderCellParams) {
-    navigate(`/categories/edit/${rowData.id}`);
+  function handleEdit(params: GridRenderCellParams) {
+    navigate(`/categories/edit/${params.id}`);
   }
 
-  function renderActionsCell(rowData: GridRenderCellParams) {
+  function handleDelete(params: GridRenderCellParams) {
+    dispatch(deleteCategory(params))
+  }
+
+  function renderActionsCell(params: GridRenderCellParams) {
     return (
       <>
         <IconButton
           color="secondary"
-          onClick={() => console.log("clicked delete")}
+          onClick={() => handleDelete(params.value)}
           aria-label="delete"
         >
           <DeleteIcon />
         </IconButton>
         <IconButton
-          onClick={() => handleEdit(rowData)}
+          onClick={() => handleEdit(params)}
           aria-label="edit"
           style={{ color: "yellow" }}
         >
@@ -94,10 +101,10 @@ export default function CategoryList() {
     );
   }
 
-  function renderIsActiveCell(rowData: GridRenderCellParams) {
+  function renderIsActiveCell(params: GridRenderCellParams) {
     return (
-      <Typography color={rowData.value ? "primary" : "secondary"}>
-        {rowData.value ? "Active" : "Inactive"}
+      <Typography color={params.value ? "primary" : "secondary"}>
+        {params.value ? "Active" : "Inactive"}
       </Typography>
     );
   }
