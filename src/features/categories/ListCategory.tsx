@@ -1,14 +1,6 @@
-import { Box, Button, IconButton, Typography } from "@mui/material";
-import { useAppSelector } from "../../app/hooks";
-import {
-  deleteCategory,
-  selectCategories,
-  useDeleteCategoryMutation,
-  useGetCategoriesQuery,
-} from "./categorySlice";
-import { Link, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { Box, Button, IconButton, Typography } from "@mui/material";
 import {
   DataGrid,
   GridColDef,
@@ -16,9 +8,14 @@ import {
   GridRowsProp,
   GridToolbar,
 } from "@mui/x-data-grid";
-import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  useDeleteCategoryMutation,
+  useGetCategoriesQuery
+} from "./categorySlice";
 
 export default function CategoryList() {
   const navigate = useNavigate();
