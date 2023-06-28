@@ -5,6 +5,7 @@ import {
   GridColDef,
   GridFilterModel,
   GridRenderCellParams,
+  GridToolbar,
 } from "@mui/x-data-grid";
 import { Results } from "../../../types/Category";
 import { Box, IconButton, Typography } from "@mui/material";
@@ -37,7 +38,7 @@ export function CategoriesTable({
 }: Props) {
   const navigate = useNavigate();
 
-  const slotProps = {
+  const componentsProps = {
     toolbar: {
       showQuickFilter: true,
       quickFilterProps: { debounceMs: 500 },
@@ -111,8 +112,6 @@ export function CategoriesTable({
     );
   }
 
-  const rows = data ? mapDataToGridRows(data) : [];
-
   function renderNameCell(params: GridRenderCellParams) {
     return (
       <Link
@@ -124,9 +123,27 @@ export function CategoriesTable({
     );
   }
 
+  const rows = data ? mapDataToGridRows(data) : [];
+  const rowCount = data?.meta.total || 0;
+
   return (
     <Box sx={{ display: "flex", height: 600 }}>
-      <DataGrid rows={rows} columns={columns} />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        rowCount={rowCount}
+        disableColumnFilter
+        loading={isFetching}
+        filterMode={"server"}
+        disableColumnSelector
+        pageSize={rowsPerPage}
+        paginationMode={"server"}
+        componentsProps={componentsProps}
+        onPageChange={handleOnPageChange}
+        components={{ Toolbar: GridToolbar }}
+        onPageSizeChange={handleOnPageSizeChange}
+        checkboxSelection={false}
+      />
     </Box>
   );
 }

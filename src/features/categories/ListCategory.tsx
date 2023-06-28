@@ -28,7 +28,7 @@ export default function CategoryList() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const slotProps = {
+  const componentsProps = {
     toolbar: {
       showQuickFilter: true,
       quickFilterProps: { debounceMs: 500 },
@@ -150,10 +150,10 @@ export default function CategoryList() {
           columns={columns}
           disableColumnFilter
           disableColumnSelector
-          slotProps={slotProps}
+          componentsProps={componentsProps}
           disableDensitySelector
-          slots={{ toolbar: GridToolbar }}
-          pageSizeOptions={[10, 20, 50, 100]}
+          components={{ Toolbar: GridToolbar }}
+          rowsPerPageOptions={[10, 20, 50, 100]}
         />
       </Box>
 
