@@ -11,11 +11,15 @@ import {
 import { CategoriesTable } from "./components/CategoryTable";
 
 export default function CategoryList() {
+  const [page, setPage] = useState(1);
   const [perPage] = useState(10);
   const [rowsPerPage] = useState([10, 25, 50, 100]);
   const [search, setSearch] = useState("");
+
+  const options = { perPage, search, page };
+
   const { enqueueSnackbar } = useSnackbar();
-  const { data, isFetching, error } = useGetCategoriesQuery();
+  const { data, isFetching, error } = useGetCategoriesQuery(options);
   const [deleteCategory, deleteCategoryStatus] = useDeleteCategoryMutation();
   const navigate = useNavigate();
 
@@ -62,7 +66,7 @@ export default function CategoryList() {
         </Button>
       </Box>
 
-      <CategoriesTable 
+      <CategoriesTable
         data={data}
         perPage={perPage}
         isFetching={isFetching}
