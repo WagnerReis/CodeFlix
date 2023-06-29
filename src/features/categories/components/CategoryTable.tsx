@@ -16,13 +16,13 @@ type Props = {
   data: Results | undefined;
   perPage: number;
   isFetching: boolean;
-  rowsPerPage?: number;
+  rowsPerPage?: number[];
 
   handleOnPageChange: (page: number) => void;
-  handleFilter: (filterModel: GridFilterModel) => void;
+  handleFilterChange: (filterModel: GridFilterModel) => void;
   handleOnPageSizeChange: (perPage: number) => void;
-  handleDelete: (id: number) => void;
-  handleEdit: (id: number) => void;
+  handleDelete: (id: string) => void;
+  handleEdit: (id: GridRenderCellParams) => void;
 };
 
 export function CategoriesTable({
@@ -31,7 +31,7 @@ export function CategoriesTable({
   isFetching,
   rowsPerPage,
   handleOnPageChange,
-  handleFilter,
+  handleFilterChange,
   handleOnPageSizeChange,
   handleDelete,
   handleEdit,
@@ -84,7 +84,7 @@ export function CategoriesTable({
           <DeleteIcon />
         </IconButton>
         <IconButton
-          onClick={() => handleEdit(params.value)}
+          onClick={() => handleEdit(params)}
           aria-label="edit"
           style={{ color: "yellow" }}
         >
@@ -136,13 +136,15 @@ export function CategoriesTable({
         loading={isFetching}
         filterMode={"server"}
         disableColumnSelector
-        pageSize={rowsPerPage}
+        pageSize={perPage}
         paginationMode={"server"}
+        checkboxSelection={false}
+        rowsPerPageOptions={rowsPerPage}
         componentsProps={componentsProps}
         onPageChange={handleOnPageChange}
         components={{ Toolbar: GridToolbar }}
+        onFilterModelChange={handleFilterChange}
         onPageSizeChange={handleOnPageSizeChange}
-        checkboxSelection={false}
       />
     </Box>
   );
