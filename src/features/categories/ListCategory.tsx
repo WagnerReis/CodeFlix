@@ -12,7 +12,7 @@ import { CategoriesTable } from "./components/CategoryTable";
 
 export default function CategoryList() {
   const [page, setPage] = useState(1);
-  const [perPage] = useState(10);
+  const [perPage, setPerPage] = useState(10);
   const [rowsPerPage] = useState([10, 25, 50, 100]);
   const [search, setSearch] = useState("");
 
@@ -24,15 +24,21 @@ export default function CategoryList() {
   const navigate = useNavigate();
 
   function handleOnPageChange(page: number) {
-    console.log(page);
+    setPage(page + 1);
   }
 
   function handleOnPageSizeChange(perPage: number) {
-    console.log(perPage);
+    setPerPage(perPage);
   }
 
   function handleFilterChange(filterModel: GridFilterModel) {
-    console.log(filterModel);
+    if(filterModel.quickFilterValues?.length) {
+      const search = filterModel.quickFilterValues.join("");
+      setSearch(search);
+    } else {
+      return setSearch("");
+    }
+
   }
 
   function handleEditCategory(params: GridRenderCellParams) {
