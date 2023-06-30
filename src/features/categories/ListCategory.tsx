@@ -1,5 +1,4 @@
-import EditIcon from "@mui/icons-material/Edit";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { GridFilterModel, GridRenderCellParams } from "@mui/x-data-grid";
 import { useSnackbar } from "notistack";
 import { useEffect, useState } from "react";
@@ -57,6 +56,10 @@ export default function CategoryList() {
       enqueueSnackbar(`Category not deleted`, { variant: "error" });
     }
   }, [deleteCategoryStatus, enqueueSnackbar]);
+
+  if(error) {
+    return <Typography>Error fetching categories</Typography>
+  }
 
   return (
     <Box maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
